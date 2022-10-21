@@ -1,44 +1,38 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import 'package:hive/hive.dart';
 import 'package:student_dattabase/DataBase/Model/data_model.dart';
 
-ValueNotifier<List<StudentModel>> studentListNotifier = ValueNotifier([]);
+ValueNotifier<List<StudentModel>> studentlistNotifier = ValueNotifier([]);
 
 Future<void> addStudent(StudentModel value) async {
-  final studentDB = await Hive.openBox<StudentModel>('Student_db');
-  final _id = await studentDB.add(value);
-  value.id = _id;
-  final data = StudentModel(
-    name: value.name,
-    age: value.age,
-    gender: value.gender,
-    grade: value.grade,
-  );
-
-  await studentDB.put(_id, data);
-
-  studentListNotifier.value.add(data);
-  studentListNotifier.notifyListeners();
+  final studentDB = await Hive.openBox<StudentModel>('student_db');
+  await studentDB.add(value);
+  // final _no =await
+  // value.no = _no;
+  studentlistNotifier.value.add(value);
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+  studentlistNotifier.notifyListeners();
 }
 
 Future<void> getAllStudents() async {
-  final studentDB = await Hive.openBox<StudentModel>('Student_db');
-  studentListNotifier.value.clear();
-
-  studentListNotifier.value.addAll(studentDB.values);
-  studentListNotifier.notifyListeners();
+  final studentDB = await Hive.openBox<StudentModel>('student_db');
+  studentlistNotifier.value.clear();
+  studentlistNotifier.value.addAll(studentDB.values);
+  // ignore: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
+  studentlistNotifier.notifyListeners();
 }
 
 Future<void> deleteStudent(index) async {
   final studentDB = await Hive.openBox<StudentModel>('student_db');
-
-  await studentDB.deleteAt(index);
+  studentDB.deleteAt(index);
   getAllStudents();
 }
 
 Future<void> editStudent(index, value) async {
-  final studentDB = await Hive.openBox<StudentModel>('Student_db');
+  final studentDB = await Hive.openBox<StudentModel>('student_db');
   await studentDB.putAt(index, value);
   getAllStudents();
 }

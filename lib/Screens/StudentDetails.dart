@@ -1,32 +1,23 @@
+// ignore_for_file: file_names, unused_import, must_be_immutable, prefer_const_constructors, avoid_unnecessary_containers, prefer_interpolation_to_compose_strings
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:student_dattabase/DataBase/Functions/DB_Functions.dart';
 import 'package:student_dattabase/DataBase/Model/data_model.dart';
+import 'package:student_dattabase/Screens/StudentDetails.dart';
 
-class StudentDetails extends StatefulWidget {
-  StudentDetails({Key? key, required this.data})
-      : super(key: key);
-
+class StudentDetails extends StatelessWidget {
   StudentModel data;
-
-
-
-  @override
-  State<StudentDetails> createState() => _StudentDetailsState();
-}
-
-class _StudentDetailsState extends State<StudentDetails> {
+  int index;
   XFile? imgXFile;
 
-  final ImagePicker imagePicker = ImagePicker();
-
-  getPicFromGallery() async {
-    imgXFile = await imagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      imgXFile;
-    });
-  }
+  StudentDetails({
+    Key? key,
+    required this.data,
+    required this.index,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -42,16 +33,7 @@ class _StudentDetailsState extends State<StudentDetails> {
         ),
         toolbarHeight: 80,
         centerTitle: true,
-        backgroundColor: Colors.blue,
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.delete,
-              color: Colors.white,
-            ),
-          ),
-        ],
+        backgroundColor: Colors.blue[900],
       ),
       backgroundColor: Colors.white,
       body: Padding(
@@ -60,27 +42,25 @@ class _StudentDetailsState extends State<StudentDetails> {
           child: Container(
             child: Column(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    getPicFromGallery();
-                  },
-                  child: CircleAvatar(
-                    radius: MediaQuery.of(context).size.width * 0.30,
-                    backgroundColor: Colors.grey,
-                    backgroundImage: imgXFile == null
-                        ? null
-                        : FileImage(
-                            File(imgXFile!.path),
-                          ),
-                    child: imgXFile == null
-                        ? Icon(
-                            Icons.add_photo_alternate,
-                            color: Colors.white,
-                            size: MediaQuery.of(context).size.width * 0.30,
-                          )
-                        : null,
-                  ),
+                CircleAvatar(
+                  radius: MediaQuery.of(context).size.width * 0.30,
+                  backgroundColor: Colors.grey,
+                  // backgroundImage: imgXFile == null
+                  //     ? null
+                  //     : FileImage(
+                  //         File(imgXFile!.path),
+                  //       ),
+                  // child: imgXFile == null
+                  //     ? Icon(
+                  //         Icons.add_photo_alternate,
+                  //         color: Colors.white,
+                  //         size: MediaQuery.of(context).size.width * 0.30,
+                  //       )
+                  //     : null,
+                  backgroundImage: NetworkImage(
+                      'https://img.freepik.com/premium-vector/girl-holding-book-isolated-cartoon-character-elementary-school-student-with-backpack_71593-230.jpg?w=2000'),
                 ),
+                // ),
                 SizedBox(
                   height: 90,
                 ),
@@ -94,31 +74,27 @@ class _StudentDetailsState extends State<StudentDetails> {
                   //Center Row contents vertically,
                   children: [
                     Text(
-                      'Name :',
+                      data.name,
                       style: TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.w500,
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      ),
-                    ),
-                    Divider(
-                      thickness: 5,
-                      color: Colors.red,
-                    ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   'Name' ,
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 30,
+                    //   ),
+                    // ),
                   ],
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -127,22 +103,22 @@ class _StudentDetailsState extends State<StudentDetails> {
                   //Center Row contents vertically,
                   children: [
                     Text(
-                      'Age :',
+                      data.id,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Age',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   'Age',
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 30,
+                    //   ),
+                    // ),
                     Divider(
                       thickness: 5,
                       color: Colors.blue,
@@ -159,22 +135,22 @@ class _StudentDetailsState extends State<StudentDetails> {
                   //Center Row contents vertically,
                   children: [
                     Text(
-                      'Gender :',
+                      data.age,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text(
-                      'Gender',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 30,
-                      ),
-                    ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   'Age',
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 30,
+                    //   ),
+                    // ),
                     Divider(
                       thickness: 5,
                       color: Colors.blue,
@@ -191,22 +167,54 @@ class _StudentDetailsState extends State<StudentDetails> {
                   //Center Row contents vertically,
                   children: [
                     Text(
-                      'Grade :',
+                      data.gender,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                       ),
                     ),
-                    SizedBox(
-                      width: 10,
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   'Gender',
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 30,
+                    //   ),
+                    // ),
+                    Divider(
+                      thickness: 5,
+                      color: Colors.blue,
                     ),
+                  ],
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  //Center Row contents horizontally,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  //Center Row contents vertically,
+                  children: [
                     Text(
-                      'Grade',
+                      data.grade,
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 30,
                       ),
                     ),
+                    // SizedBox(
+                    //   width: 10,
+                    // ),
+                    // Text(
+                    //   'Grade',
+                    //   style: TextStyle(
+                    //     color: Colors.black,
+                    //     fontSize: 30,
+                    //   ),
+                    // ),
                   ],
                 ),
               ],
